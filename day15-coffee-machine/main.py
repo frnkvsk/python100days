@@ -52,6 +52,23 @@ def is_resources_sufficient(order_in):
          return False
    return True
 
+def make_coffee(cost, ingredients):
+   money_in = input(f'Your cost is ${format(cost,".2f")} please insert coins ').lower().split(',')
+   for x in money_in:  
+      moneyEach = x.split() 
+      cost -= process_coin(float(moneyEach[0]), moneyEach[1])
+   if cost <= 0:
+      for e in ingredients:
+         resources[e] = resources[e] - ingredients[e]
+      global profit
+      profit = profit + float(MENU[userInput]['cost'])
+      if cost < 0:
+         print(f'Here is ${format(cost * -1, ".2f")} dollars in change.')
+      print(f'Here is you {userInput}. Enjoy!')
+   else:
+      print("Sorry that's not enough money. Money refunded.")
+
+
 while userInput != 'off':
    userInput = input('What would you like? (espresso/latte/cappuccino): ').lower()
    if userInput == 'report':
@@ -59,25 +76,13 @@ while userInput != 'off':
       Water: %sml
       Milk: %sml
       Coffee: %sg
-      Money: $format(%s, '.2f')
+      Money: $%s
       """ % (resources['water'], resources['milk'], resources['coffee'], format(profit, '.2f')))
    elif userInput == 'espresso' or userInput == 'latte' or userInput == 'cappuccino':
       ingredients = MENU[userInput]['ingredients']
       cost = float(MENU[userInput]['cost'])
 
       if is_resources_sufficient(ingredients):
-         money_in = input(f'Your cost is ${format(cost,".2f")} please insert coins ').lower().split(',')
-         for x in money_in:  
-            moneyEach = x.split() 
-            cost -= process_coin(float(moneyEach[0]), moneyEach[1])
-         if cost <= 0:
-            for e in ingredients:
-               resources[e] = resources[e] - ingredients[e]
-            profit = profit + float(MENU[userInput]['cost'])
-            if cost < 0:
-               print(f'Here is ${format(cost * -1, ".2f")} dollars in change.')
-            print(f'Here is you {userInput}. Enjoy!')
-         else:
-            print("Sorry that's not enough money. Money refunded.")
+         make_coffee(cost, ingredients)
    else:
-      print(f"Sorry we don't have {userInput}, maybe you spelt it wrong?")
+      print(f"Sorry we don't have {userInput}, check you spelling and menu list.")
