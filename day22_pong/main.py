@@ -8,22 +8,20 @@ import time
 
 WIDTH = 900
 HEIGHT = 600
+game_on = True
 active_player = 'left'
 player_1_score = 0
 player_2_score = 0
-ball_position = (0, 0)
 screen = Screen()
 screen.tracer(0)
 screen.listen()
-
-turn = 'left'
-
 screen.setup(WIDTH, HEIGHT)
 screen.bgcolor('black')
 screen.title('Pong Game')
 score = Score(WIDTH, HEIGHT, player_1_score, player_2_score)
 paddle_1 = Paddle(-WIDTH / 2 + 30, -10)
 paddle_2 = Paddle(WIDTH / 2 - 30, -10)
+DrawCenterLine(600)
 
 
 def move_up():
@@ -40,21 +38,13 @@ def move_down():
         paddle_2.move_down()
 
 
-screen.onkeypress(move_up, 'Up')
-screen.onkeypress(move_down, 'Down')
-
-
-dcl = DrawCenterLine(600)
-
-game_on = True
-
-
 def game_over():
     main.game_on = False
 
 
+screen.onkeypress(move_up, 'Up')
+screen.onkeypress(move_down, 'Down')
 screen.onkey(game_over, 'x')
-
 
 while game_on:
     start_right = (10, 5)
@@ -78,21 +68,17 @@ while game_on:
             score = Score(WIDTH, HEIGHT, player_1_score, player_2_score)
             active_player = 'right'
             curr_round = False
-            print(x, y, X, Y)
         elif X <= -WIDTH / 2 - 10:
             player_2_score += 1
             score = Score(WIDTH, HEIGHT, player_1_score, player_2_score)
             active_player = 'left'
             curr_round = False
-            print(x, y, X, Y)
         elif Y >= HEIGHT / 2 - 10 or Y <= -HEIGHT / 2 + 10:
             y *= -1
         elif ball.xcor() >= WIDTH / 2 - 50 and ball.distance(paddle_2) < 50:
-            print('hit right', ball.distance(paddle_2))
             x *= -1
             active_player = 'right'
         elif ball.xcor() <= -WIDTH / 2 + 50 and ball.distance(paddle_1) < 50:
-            print('hit left', ball.distance(paddle_1))
             x *= -1
             active_player = 'left'
         ball.hideturtle()
