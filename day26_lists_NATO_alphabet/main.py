@@ -35,7 +35,17 @@ import random
 #         print(row.score)
 import pandas
 
-letter_dict = {r.letter:r.code for (i,r) in pandas.read_csv('nato_phonetic_alphabet.csv').iterrows()}
-in_word = input('Enter a word ').upper()
-phonetic_list = [letter_dict[letter] for letter in list(in_word.strip())]
-print(phonetic_list)
+letter_dict = {r.letter:r.code for (i, r) in pandas.read_csv('nato_phonetic_alphabet.csv').iterrows()}
+
+
+def generate_phonetic():
+    in_word = input('Enter a word ').upper()
+    try:
+        phonetic_list = [letter_dict[letter] for letter in list(in_word.strip())]
+    except KeyError:
+        print(f"Sorry, only letters in the alphabet please.")
+        generate_phonetic()
+    else:
+        print(phonetic_list)
+
+generate_phonetic()
