@@ -16,7 +16,7 @@ NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
 STOCK_PARAMS = {
     "function": "TIME_SERIES_DAILY_ADJUSTED",
     "symbol": STOCK_NAME,
-    "apikey": "AlphaVantageAPIKEY"
+    "apikey": AlphaVantageAPIKEY
 }
 response = requests.get(url=STOCK_ENDPOINT, params=STOCK_PARAMS)
 data = response.json()["Time Series (Daily)"]
